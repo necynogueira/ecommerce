@@ -26,5 +26,11 @@ class CadastroForm(FlaskForm):
 
 class LoginForm(FlaskForm):
     usuario = StringField(label="Usuário:", validators=[DataRequired()])
-    senha = StringField(label="Senha:", validators=[DataRequired()])
+    senha = PasswordField(label="Senha:", validators=[DataRequired()])
     submit = SubmitField(label="Log In")
+
+class CompraProdutoForm(FlaskForm):
+    submit = SubmitField(label="Comprar Produto!")
+
+class VendaProdutoForm(FlaskForm):
+    submit = SubmitField(label="Vender Produto!")

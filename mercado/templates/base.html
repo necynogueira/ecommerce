@@ -22,10 +22,21 @@
               <a class="nav-link active" aria-current="page" href="{{url_for('page_home')}}">Home</a>
               <a class="nav-link" href="{{url_for('page_produto')}}">Produtos</a>
             </div>
+            {% if current_user.is_authenticated %}
             <div class="navbar-nav ms-auto">
-                <a class="nav-link" href="{{url_for('page_login')}}">Login</a>
-                <a class="nav-link" href="{{url_for('page_cadastro')}}">Cadastro</a>
+              <a class="nav_link" style="color: lawngreen; font-weight: bold;" >
+                <i class="fas fa-coins"></i>
+                {{current_user.formataValor }}
+              </a>
+              <a class="nav_link">Bem Vindo, {{ current_user.usuario }}</a>
+              <a class="nav-link" href="{{url_for('page_logout')}}">Logout</a>
+          </div>
+            {% else %}
+            <div class="navbar-nav ms-auto">
+              <a class="nav-link" href="{{url_for('page_login')}}">Login</a>
+              <a class="nav-link" href="{{url_for('page_cadastro')}}">Cadastro</a>
             </div>
+            {% endif %}
           </div>
         </div>
       </nav>
@@ -51,7 +62,8 @@
       {% endblock %}
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.min.js" integrity="sha384-cuYeSxntonz0PPNlHhBs68uyIAVpIIOZZ5JqeqvYYIcEL727kskC66kF92t6Xl2V" crossorigin="anonymous"></script>
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.2.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-kenU1KFdBIe4zVF0s0G1M5b4hcpxyD9F7jL+jjXkk+Q2h455rYXK/7HAuoJl+0I4" crossorigin="anonymous"></script> 
-</body>
+    <script src="https://kit.fontawesome.com/a958be0df2.js" crossorigin="anonymous"></script>
+  </body>
 <style>
     body{
         background-color: #212121;
