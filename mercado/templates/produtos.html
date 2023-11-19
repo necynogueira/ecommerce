@@ -41,6 +41,33 @@
             <h2>Produtos Adiquiridos</h2>
             <p>Clique em devolver o item caso tenha interesse</p>
             <hr>
+            <div class="row">
+            {% for dono_item in dono_itens %}
+            {% include 'includes/dono_modal_produtos.html' %}
+                <div class="col-md-6">
+                    <div class="card text-center bg-dark" style="width: 18rem;">
+                        <div class="card-body">
+                          <h5 class="card-title">{{  dono_item.nome }}</h5>
+                          <button
+                           style="margin-bottom: 10px; margin: 10px;"
+                           data-bs-toggle="modal"
+                           data-bs-target="#exampleModalVenda-{{ dono_item.id }}"
+                           class="btn btn-outline-danger"
+                           tapy="button"
+                          >
+                            Vender esse produto
+                          </button>
+                          <p>
+                            <strong>
+                                Esse produto custa R$ {{ dono_item.preco }}
+                            </strong>
+                          </p>
+                        </div>
+                      </div>
+
+                </div>
+            {% endfor %}
+            </div>
         </div>
     </div>
 {% endblock %}

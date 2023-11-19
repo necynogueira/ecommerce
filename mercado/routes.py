@@ -1,7 +1,7 @@
 from mercado import app
 from flask import render_template, redirect, url_for, flash, request
 from mercado.models import Item, User
-from mercado.forms import CadastroForm, LoginForm, CompraProdutoForm
+from mercado.forms import CadastroForm, LoginForm, CompraProdutoForm, VendaProdutoForm
 from mercado import db
 from flask_login import login_user, logout_user, login_required,  current_user
 
@@ -15,7 +15,9 @@ def page_home():
 @login_required
 def page_produto():
     compra_form = CompraProdutoForm()
+    venda_form = VendaProdutoForm()
     if request.method == "POST":
+        # compra produto
         comprar_produto = request.form.get('comprar_produto')
         produto_obj = Item.query.filter_by(nome=comprar_produto).first()
         if produto_obj:
@@ -24,10 +26,21 @@ def page_produto():
                 flash(f"Parabéns! Você comprou o produto {produto_obj.nome}", category="success")
             else:
                 flash(f"Você não possui saldo suficiente para comprar o produto {produto_obj.nome}", category="danger")
+        # venda produto
+        venda_produto = request.form.get('venda_produto')
+        produto_obj_venda = Item.query.filter_by(nome=venda_produto).first()
+        if produto_obj_venda:
+            if current_user.venda_disponivel(produto_obj_venda):
+                produto_obj_venda.venda(current_user)
+                flash(f"Parabéns! Você vendeu o produto {produto_obj_venda.nome}", category="success")
+            else:
+                flash(f"Algo deu errado com a venda do produto {produto_obj_venda.nome}", category="danger")
+
         return redirect(url_for('page_produto'))
     if request.method == "GET":
         itens = Item.query.filter_by(dono=None)
-        return render_template("produtos.html", itens=itens, compra_form=compra_form)
+        dono_itens = Item.query.filter_by(dono=current_user.id)
+        return render_template("produtos.html", itens=itens, compra_form=compra_form, dono_itens=dono_itens, venda_form=venda_form)
 
 @app.route('/cadastro', methods=['GET', 'POST'])
 def page_cadastro():
